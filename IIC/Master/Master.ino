@@ -56,7 +56,7 @@ void EnviarInfoaEsclavo(Formato_Info Mensaje){
   Serial.println("------INFO ENVIADA A ESCLAVO-------");
 
 }
-
+ 
 //--------------------------------    PEDIR INFO DE ESCLAVO   ----------------------------------
 void RecibirInfoDeEsclavo(Formato_Info Mensaje){
   
@@ -66,6 +66,6 @@ void RecibirInfoDeEsclavo(Formato_Info Mensaje){
 
   Serial.print("Comando: ");Serial.println(Mensaje.Comando);
   Serial.print("Valor: ");Serial.println(Mensaje.Valor);
-  Serial.println("------MENSAJE DEL SLAVE RECIBIDO-------");
+  Serial.println("------MENSAJE RECIBIDO DEL SLAVE -------");
 
 }

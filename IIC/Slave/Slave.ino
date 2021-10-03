@@ -4,7 +4,6 @@
 
 #define Slave_Address 2
 
-
 typedef struct {
 
   uint8_t  Comando;
@@ -15,30 +14,28 @@ Tipo_Mensaje;
 Tipo_Mensaje Mensaje;
 
 //--------------------------------  FUNCIONES  ----------------------------------------------
-void receiveEvent(int howMany);
-void requestEvent();
+void EventoAlRecibirInfo(int MessageSize);  //funcion que se ejecuta cuando recibo datos por IIC
+void EventoAlPedirmeInfo();
 
 void setup() {
 
   Serial.begin(9600);
 
-
-  Wire.begin(Slave_Address);    /* join i2c bus with address 8 */
+  Wire.begin(Slave_Address);    /* join i2c bus with address*/
   delay(50);          
-  Wire.onReceive(receiveEvent); /* register receive event */
-  Wire.onRequest(requestEvent); /* register request event */
+  Wire.onReceive(EventoAlRecibirInfo); /* register receive event */
+  Wire.onRequest(EventoAlPedirmeInfo); /* register request event */
 }
 
 void loop() {
  
-  delay(1000);
 }
 
 
 // function that executes whenever data is received from master
-void receiveEvent(int howMany) {
+void EventoAlRecibirInfo(int MessageSize) {
   
-  Wire.readBytes((byte*)& Mensaje, sizeof Mensaje);
+  Wire.readBytes((byte*)& Mensaje, sizeof Mensaje); //guarda en variable mensaje lo recibido
 
   Serial.print("Comando: ");Serial.println(Mensaje.Comando);
   Serial.print("Valor: ");Serial.println(Mensaje.Valor);
@@ -46,10 +43,10 @@ void receiveEvent(int howMany) {
 }
 
 // function that executes whenever data is requested from master
-void requestEvent() {
+void EventoAlPedirmeInfo() {
  
   Mensaje.Comando=2;
-  Mensaje.Valor=222;
+  Mensaje.Valor=Mensaje.Valor*2; //multiplica por 2 el valor recibido, como para darme cuenta que esta cambiando algo
 
   Wire.write((byte *) & Mensaje, sizeof Mensaje);  /*send string on request */
 }
